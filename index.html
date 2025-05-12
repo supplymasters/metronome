@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="ESB Metronome">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>ESB Metronome</title>
+  <style>
+    body {
+      background-color: #222;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    select, button, input[type="range"] {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px 0;
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 8px;
+      border: none;
+      background-color: #444;
+      color: white;
+    }
+
+    select {
+      width: 80%;
+      max-width: 400px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      min-width: 120px;
+      cursor: pointer;
+    }
+
+    button:active {
+      background-color: #45a049;
+    }
+
+    input[type="range"] {
+      width: 80%;
+      max-width: 400px;
+      height: 8px;
+      background: #444;
+      border-radius: 4px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      background: #4CAF50;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .beat-light {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      margin: 10px;
+      border-radius: 50%;
+      background-color: #90ee90;
+      transition: background-color 0.2s ease;
+    }
+
+    .bright {
+      background-color: #ffffff !important;
+      animation: none !important;
+    }
+
+    .pulse {
+      animation: pulse 0.6s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: 0.5; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      
+      select, input[type="range"] {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>ESB Metronome App</h2>
+
+  <label for="song-select">Choose a Song:</label><br>
+  <select id="song-select">
+    <option value="">-- Select a song --</option>
+    
+    <optgroup label="A">
+      <option value="130">Ain't No Mountain High Enough</option>
+      <option value="124">Ain't Too Proud to Beg</option>
+      <option value="115">American Girl</option>
+      <option value="150">Autumn Leaves</option>
+    </optgroup>
+
+    <optgroup label="B">
+      <option value="119">Billie Jean</option>
+      <option value="116">Blame It on the Boogie</option>
+      <option value="129">Blue Bossa</option>
+      <option value="108">Brick House</option>
+      <option value="148">Brown Eyed Girl</option>
+      <option value="132">Boogie Shoes</option>
+      <option value="116">Bust a Move</option>
+    </optgroup>
+
+    <optgroup label="C">
+      <option value="113">Can't Stop the Feeling!</option>
+      <option value="150">Crocodile Rock</option>
+      <option value="135">Crazy Train</option>
+    </optgroup>
+
+    <optgroup label="D">
+      <option value="119">Dance With Somebody</option>
+      <option value="126">Dancing in the Street</option>
+      <option value="104">December 1963 (Oh What a Night)</option>
+      <option value="132">Disco Inferno</option>
+      <option value="124">Don't Start Now</option>
+      <option value="119">Don't Stop Believin'</option>
+      <option value="122">Drive My Car</option>
+      <option value="120">Dynamite</option>
+    </optgroup>
+
+    <optgroup label="F">
+      <option value="132">Five Hundred Miles-500 Miles)</option>
+    </optgroup>
+
+    <optgroup label="G">
+      <option value="123">Give It To Me Baby</option>
+      <option value="113">Get Down Tonight</option>
+      <option value="129">Girl from Ipanema</option>
+      <option value="105">Go Around In Circles</option>
+    </optgroup>
+
+    <optgroup label="H">
+      <option value="110">Hold On, I'm Comin'</option>
+      <option value="119">Hot Hot Hot</option>
+    </optgroup>
+
+    <optgroup label="I">
+      <option value="90">I'll Be There</option>
+      <option value="108">I Wish</option>
+      <option value="118">I Will Survive</option>
+      <option value="128">I Gotta Feeling</option>
+      <option value="115">It's Not Unusual</option>
+    </optgroup>
+
+    <optgroup label="J">
+      <option value="129">Jump</option>
+      <option value="93">Just My Imagination</option>
+      <option value="120">Juice</option>
+      <option value="111">Jumpin' Jack Flash</option>
+    </optgroup>
+
+    <optgroup label="K">
+      <option value="111">Kiss</option>
+    </optgroup>
+
+    <optgroup label="L">
+      <option value="120">Le Freak</option>
+      <option value="102">Let's Stay Together</option>
+      <option value="134">Love Shack</option>
+    </optgroup>
+
+    <optgroup label="M">
+      <option value="108">My Girl</option>
+      <option value="136">Mony Mony</option>
+      <option value="148">Mr. Brightside</option>
+    </optgroup>
+
+    <optgroup label="O">
+      <option value="122">Old Time Rock and Roll</option>
+      <option value="104">Ob-La-Di, Ob-La-Da</option>
+    </optgroup>
+
+    <optgroup label="P">
+      <option value="120">Power of Love</option>
+      <option value="110">Play That Funky Music</option>
+      <option value="104">Put a Little Love in Your Heart</option>
+      <option value="121">Proud Mary</option>
+    </optgroup>
+
+    <optgroup label="R">
+      <option value="115">Respect</option>
+    </optgroup>
+
+    <optgroup label="S">
+      <option value="134">Shake Your Groove Thing</option>
+      <option value="119">Shake Your Body (Down to the Ground)</option>
+      <option value="128">Shut Up and Dance</option>
+      <option value="108">Signed, Sealed, Delivered</option>
+      <option value="139">Summer of '69</option>
+      <option value="127">Sweet Caroline</option>
+    </optgroup>
+
+    <optgroup label="T">
+      <option value="104">This Is How We Do It</option>
+      <option value="128">Twist and Shout</option>
+    </optgroup>
+
+    <optgroup label="U">
+      <option value="115">Uptown Funk</option>
+    </optgroup>
+
+    <optgroup label="V">
+      <option value="108">Valerie</option>
+    </optgroup>
+
+    <optgroup label="W">
+      <option value="121">We Are Family</option>
+      <option value="152">We Got the Beat</option>
+      <option value="112">Wherever You Will Go</option>
+    </optgroup>
+
+    <optgroup label="Y">
+      <option value="108">You Sexy Thing</option>
+      <option value="108">You're the One That I Want</option>
+    </optgroup>
+  </select>
+
+  <br><br>
+  <label>BPM: <span id="bpm-display">120</span></label><br>
+  <input type="range" id="bpm" min="40" max="240" value="120"><br><br>
+  <button id="start-stop">Start</button>
+
+  <div style="margin-top: 30px;">
+    <div class="beat-light" id="light-0"></div>
+    <div class="beat-light" id="light-1"></div>
+    <div class="beat-light" id="light-2"></div>
+    <div class="beat-light" id="light-3"></div>
+  </div>
+
+  <script>
+    // Register service worker for offline functionality
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+
+    // Prevent zooming on double tap
+    document.addEventListener('touchstart', function(event) {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(event) {
+      const now = (new Date()).getTime();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+
+    const bpmInput = document.getElementById('bpm');
+    const bpmDisplay = document.getElementById('bpm-display');
+    const startStopButton = document.getElementById('start-stop');
+    const songSelect = document.getElementById('song-select');
+
+    let isRunning = false;
+    let interval;
+    let currentBeat = 0;
+    const beatCount = 4;
+    const lights = [
+      document.getElementById('light-0'),
+      document.getElementById('light-1'),
+      document.getElementById('light-2'),
+      document.getElementById('light-3')
+    ];
+
+    function flashBeat(index) {
+      lights.forEach((light, i) => {
+        light.classList.remove('bright', 'pulse');
+        if (i === index) {
+          light.classList.add(i === 0 ? 'bright' : 'pulse');
+        }
+      });
+    }
+
+    function startMetronome() {
+      const bpm = parseInt(bpmInput.value);
+      const intervalTime = 60000 / bpm;
+      interval = setInterval(() => {
+        flashBeat(currentBeat);
+        currentBeat = (currentBeat + 1) % beatCount;
+      }, intervalTime);
+      isRunning = true;
+      startStopButton.textContent = 'Stop';
+    }
+
+    function stopMetronome() {
+      clearInterval(interval);
+      isRunning = false;
+      currentBeat = 0;
+      lights.forEach(light => light.classList.remove('bright', 'pulse'));
+      startStopButton.textContent = 'Start';
+    }
+
+    bpmInput.addEventListener('input', () => {
+      bpmDisplay.textContent = bpmInput.value;
+      if (isRunning) {
+        stopMetronome();
+        startMetronome();
+      }
+    });
+
+    songSelect.addEventListener('change', () => {
+      const selectedBpm = songSelect.value;
+      if (selectedBpm) {
+        bpmInput.value = selectedBpm;
+        bpmDisplay.textContent = selectedBpm;
+        if (isRunning) {
+          stopMetronome();
+          startMetronome();
+        }
+      }
+    });
+
+    startStopButton.addEventListener('click', () => {
+      isRunning ? stopMetronome() : startMetronome();
+    });
+  </script>
+</body>
+</html>
