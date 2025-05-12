@@ -15,27 +15,45 @@
       color: white;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       text-align: center;
-      padding: 40px;
+      padding: 40px 20px;
       -webkit-tap-highlight-color: transparent;
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      max-width: 200px;
+      height: auto;
+      margin-bottom: 30px;
     }
 
     select, button, input[type="range"] {
       font-size: 18px;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 12px;
+      margin: 8px 0;
       -webkit-appearance: none;
       appearance: none;
       border-radius: 8px;
       border: none;
       background-color: #444;
       color: white;
-    }
-
-    select {
-      width: 80%;
+      width: 100%;
       max-width: 400px;
     }
 
@@ -43,6 +61,8 @@
       background-color: #4CAF50;
       min-width: 120px;
       cursor: pointer;
+      margin: 20px 0;
+      padding: 12px 24px;
     }
 
     button:active {
@@ -50,11 +70,11 @@
     }
 
     input[type="range"] {
-      width: 80%;
-      max-width: 400px;
       height: 8px;
       background: #444;
       border-radius: 4px;
+      padding: 0;
+      margin: 15px 0;
     }
 
     input[type="range"]::-webkit-slider-thumb {
@@ -66,14 +86,27 @@
       cursor: pointer;
     }
 
+    .beat-lights-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
     .beat-light {
       display: inline-block;
       width: 60px;
       height: 60px;
-      margin: 10px;
       border-radius: 50%;
       background-color: #90ee90;
       transition: background-color 0.2s ease;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+      font-size: 18px;
     }
 
     .bright {
@@ -92,164 +125,175 @@
 
     @media (max-width: 768px) {
       body {
-        padding: 20px;
+        padding: 20px 15px;
       }
       
+      .logo {
+        max-width: 150px;
+        margin-bottom: 20px;
+      }
+
       select, input[type="range"] {
-        width: 90%;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .beat-light {
+        width: 50px;
+        height: 50px;
       }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <img src="images/esb-logo.png" alt="ESB Logo" class="logo">
 
-  <h2>ESB Metronome App</h2>
+    <label for="song-select">Choose a Song:</label>
+    <select id="song-select">
+      <option value="">-- Select a song --</option>
+      
+      <optgroup label="A">
+        <option value="130">Ain't No Mountain High Enough</option>
+        <option value="124">Ain't Too Proud to Beg</option>
+        <option value="115">American Girl</option>
+        <option value="150">Autumn Leaves</option>
+      </optgroup>
 
-  <label for="song-select">Choose a Song:</label><br>
-  <select id="song-select">
-    <option value="">-- Select a song --</option>
-    
-    <optgroup label="A">
-      <option value="130">Ain't No Mountain High Enough</option>
-      <option value="124">Ain't Too Proud to Beg</option>
-      <option value="115">American Girl</option>
-      <option value="150">Autumn Leaves</option>
-    </optgroup>
+      <optgroup label="B">
+        <option value="119">Billie Jean</option>
+        <option value="116">Blame It on the Boogie</option>
+        <option value="129">Blue Bossa</option>
+        <option value="108">Brick House</option>
+        <option value="148">Brown Eyed Girl</option>
+        <option value="132">Boogie Shoes</option>
+        <option value="116">Bust a Move</option>
+      </optgroup>
 
-    <optgroup label="B">
-      <option value="119">Billie Jean</option>
-      <option value="116">Blame It on the Boogie</option>
-      <option value="129">Blue Bossa</option>
-      <option value="108">Brick House</option>
-      <option value="148">Brown Eyed Girl</option>
-      <option value="132">Boogie Shoes</option>
-      <option value="116">Bust a Move</option>
-    </optgroup>
+      <optgroup label="C">
+        <option value="113">Can't Stop the Feeling!</option>
+        <option value="150">Crocodile Rock</option>
+        <option value="135">Crazy Train</option>
+      </optgroup>
 
-    <optgroup label="C">
-      <option value="113">Can't Stop the Feeling!</option>
-      <option value="150">Crocodile Rock</option>
-      <option value="135">Crazy Train</option>
-    </optgroup>
+      <optgroup label="D">
+        <option value="119">Dance With Somebody</option>
+        <option value="126">Dancing in the Street</option>
+        <option value="104">December 1963 (Oh What a Night)</option>
+        <option value="132">Disco Inferno</option>
+        <option value="124">Don't Start Now</option>
+        <option value="119">Don't Stop Believin'</option>
+        <option value="122">Drive My Car</option>
+        <option value="120">Dynamite</option>
+      </optgroup>
 
-    <optgroup label="D">
-      <option value="119">Dance With Somebody</option>
-      <option value="126">Dancing in the Street</option>
-      <option value="104">December 1963 (Oh What a Night)</option>
-      <option value="132">Disco Inferno</option>
-      <option value="124">Don't Start Now</option>
-      <option value="119">Don't Stop Believin'</option>
-      <option value="122">Drive My Car</option>
-      <option value="120">Dynamite</option>
-    </optgroup>
+      <optgroup label="F">
+        <option value="132">Five Hundred Miles-500 Miles)</option>
+      </optgroup>
 
-    <optgroup label="F">
-      <option value="132">Five Hundred Miles-500 Miles)</option>
-    </optgroup>
+      <optgroup label="G">
+        <option value="123">Give It To Me Baby</option>
+        <option value="113">Get Down Tonight</option>
+        <option value="129">Girl from Ipanema</option>
+        <option value="105">Go Around In Circles</option>
+      </optgroup>
 
-    <optgroup label="G">
-      <option value="123">Give It To Me Baby</option>
-      <option value="113">Get Down Tonight</option>
-      <option value="129">Girl from Ipanema</option>
-      <option value="105">Go Around In Circles</option>
-    </optgroup>
+      <optgroup label="H">
+        <option value="110">Hold On, I'm Comin'</option>
+        <option value="119">Hot Hot Hot</option>
+      </optgroup>
 
-    <optgroup label="H">
-      <option value="110">Hold On, I'm Comin'</option>
-      <option value="119">Hot Hot Hot</option>
-    </optgroup>
+      <optgroup label="I">
+        <option value="90">I'll Be There</option>
+        <option value="108">I Wish</option>
+        <option value="118">I Will Survive</option>
+        <option value="128">I Gotta Feeling</option>
+        <option value="115">It's Not Unusual</option>
+      </optgroup>
 
-    <optgroup label="I">
-      <option value="90">I'll Be There</option>
-      <option value="108">I Wish</option>
-      <option value="118">I Will Survive</option>
-      <option value="128">I Gotta Feeling</option>
-      <option value="115">It's Not Unusual</option>
-    </optgroup>
+      <optgroup label="J">
+        <option value="129">Jump</option>
+        <option value="93">Just My Imagination</option>
+        <option value="120">Juice</option>
+        <option value="111">Jumpin' Jack Flash</option>
+      </optgroup>
 
-    <optgroup label="J">
-      <option value="129">Jump</option>
-      <option value="93">Just My Imagination</option>
-      <option value="120">Juice</option>
-      <option value="111">Jumpin' Jack Flash</option>
-    </optgroup>
+      <optgroup label="K">
+        <option value="111">Kiss</option>
+      </optgroup>
 
-    <optgroup label="K">
-      <option value="111">Kiss</option>
-    </optgroup>
+      <optgroup label="L">
+        <option value="120">Le Freak</option>
+        <option value="102">Let's Stay Together</option>
+        <option value="134">Love Shack</option>
+      </optgroup>
 
-    <optgroup label="L">
-      <option value="120">Le Freak</option>
-      <option value="102">Let's Stay Together</option>
-      <option value="134">Love Shack</option>
-    </optgroup>
+      <optgroup label="M">
+        <option value="108">My Girl</option>
+        <option value="136">Mony Mony</option>
+        <option value="148">Mr. Brightside</option>
+      </optgroup>
 
-    <optgroup label="M">
-      <option value="108">My Girl</option>
-      <option value="136">Mony Mony</option>
-      <option value="148">Mr. Brightside</option>
-    </optgroup>
+      <optgroup label="O">
+        <option value="122">Old Time Rock and Roll</option>
+        <option value="104">Ob-La-Di, Ob-La-Da</option>
+      </optgroup>
 
-    <optgroup label="O">
-      <option value="122">Old Time Rock and Roll</option>
-      <option value="104">Ob-La-Di, Ob-La-Da</option>
-    </optgroup>
+      <optgroup label="P">
+        <option value="120">Power of Love</option>
+        <option value="110">Play That Funky Music</option>
+        <option value="104">Put a Little Love in Your Heart</option>
+        <option value="121">Proud Mary</option>
+      </optgroup>
 
-    <optgroup label="P">
-      <option value="120">Power of Love</option>
-      <option value="110">Play That Funky Music</option>
-      <option value="104">Put a Little Love in Your Heart</option>
-      <option value="121">Proud Mary</option>
-    </optgroup>
+      <optgroup label="R">
+        <option value="115">Respect</option>
+      </optgroup>
 
-    <optgroup label="R">
-      <option value="115">Respect</option>
-    </optgroup>
+      <optgroup label="S">
+        <option value="134">Shake Your Groove Thing</option>
+        <option value="119">Shake Your Body (Down to the Ground)</option>
+        <option value="128">Shut Up and Dance</option>
+        <option value="108">Signed, Sealed, Delivered</option>
+        <option value="139">Summer of '69</option>
+        <option value="127">Sweet Caroline</option>
+      </optgroup>
 
-    <optgroup label="S">
-      <option value="134">Shake Your Groove Thing</option>
-      <option value="119">Shake Your Body (Down to the Ground)</option>
-      <option value="128">Shut Up and Dance</option>
-      <option value="108">Signed, Sealed, Delivered</option>
-      <option value="139">Summer of '69</option>
-      <option value="127">Sweet Caroline</option>
-    </optgroup>
+      <optgroup label="T">
+        <option value="104">This Is How We Do It</option>
+        <option value="128">Twist and Shout</option>
+      </optgroup>
 
-    <optgroup label="T">
-      <option value="104">This Is How We Do It</option>
-      <option value="128">Twist and Shout</option>
-    </optgroup>
+      <optgroup label="U">
+        <option value="115">Uptown Funk</option>
+      </optgroup>
 
-    <optgroup label="U">
-      <option value="115">Uptown Funk</option>
-    </optgroup>
+      <optgroup label="V">
+        <option value="108">Valerie</option>
+      </optgroup>
 
-    <optgroup label="V">
-      <option value="108">Valerie</option>
-    </optgroup>
+      <optgroup label="W">
+        <option value="121">We Are Family</option>
+        <option value="152">We Got the Beat</option>
+        <option value="112">Wherever You Will Go</option>
+      </optgroup>
 
-    <optgroup label="W">
-      <option value="121">We Are Family</option>
-      <option value="152">We Got the Beat</option>
-      <option value="112">Wherever You Will Go</option>
-    </optgroup>
+      <optgroup label="Y">
+        <option value="108">You Sexy Thing</option>
+        <option value="108">You're the One That I Want</option>
+      </optgroup>
+    </select>
 
-    <optgroup label="Y">
-      <option value="108">You Sexy Thing</option>
-      <option value="108">You're the One That I Want</option>
-    </optgroup>
-  </select>
+    <label>BPM: <span id="bpm-display">120</span></label>
+    <input type="range" id="bpm" min="40" max="240" value="120">
+    <button id="start-stop">Start</button>
 
-  <br><br>
-  <label>BPM: <span id="bpm-display">120</span></label><br>
-  <input type="range" id="bpm" min="40" max="240" value="120"><br><br>
-  <button id="start-stop">Start</button>
-
-  <div style="margin-top: 30px;">
-    <div class="beat-light" id="light-0"></div>
-    <div class="beat-light" id="light-1"></div>
-    <div class="beat-light" id="light-2"></div>
-    <div class="beat-light" id="light-3"></div>
+    <div class="beat-lights-container">
+      <div class="beat-light" id="light-0"></div>
+      <div class="beat-light" id="light-1"></div>
+      <div class="beat-light" id="light-2"></div>
+      <div class="beat-light" id="light-3"></div>
+    </div>
   </div>
 
   <script>
