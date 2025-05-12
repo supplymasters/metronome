@@ -2,7 +2,7 @@
   "name": "ESB Metronome",
   "short_name": "Metronome",
   "description": "An offline metronome app for musicians",
-  "start_url": "metronome.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#222222",
   "theme_color": "#222222",

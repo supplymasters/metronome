@@ -1,6 +1,6 @@
 const CACHE_NAME = 'esb-metronome-v1';
 const ASSETS_TO_CACHE = [
-  'metronome.html',
+  'index.html',
   'manifest.json',
   'icon-192.png'
 ];
