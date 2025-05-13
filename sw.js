@@ -1,8 +1,10 @@
 const CACHE_NAME = 'esb-metronome-v1';
 const ASSETS_TO_CACHE = [
-  'index.html',
-  'manifest.json',
-  'icon-192.png'
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon-192.png',
+  '/images/esb-logo.png'
 ];
 
 // Install service worker and cache assets
@@ -35,17 +37,28 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // Return cached version or fetch new version
-        return response || fetch(event.request)
+        // Return cached version if available
+        if (response) {
+          return response;
+        }
+
+        // Otherwise fetch from network
+        return fetch(event.request)
           .then((response) => {
-            // Cache new responses
-            if (response && response.status === 200) {
-              const responseClone = response.clone();
-              caches.open(CACHE_NAME)
-                .then((cache) => {
-                  cache.put(event.request, responseClone);
-                });
+            // Don't cache if not a valid response
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
             }
+
+            // Clone the response
+            const responseToCache = response.clone();
+
+            // Cache the new response
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+
             return response;
           });
       })
