@@ -59,10 +59,34 @@
 
     button {
       background-color: #4CAF50;
-      min-width: 120px;
+      width: 140px;
+      height: 48px;
       cursor: pointer;
       margin: 20px 0;
-      padding: 12px 24px;
+      padding: 0;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .sound-toggle {
+      background-color: #666;
+      margin-left: 10px;
+    }
+
+    .sound-toggle.active {
+      background-color: #4CAF50;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
 
     button:active {
@@ -286,7 +310,10 @@
 
     <label>BPM: <span id="bpm-display">120</span></label>
     <input type="range" id="bpm" min="40" max="240" value="120">
-    <button id="start-stop">Start</button>
+    <div class="button-group">
+      <button id="start-stop">Start</button>
+      <button id="sound-toggle" class="sound-toggle">🔊 Sound</button>
+    </div>
 
     <div class="beat-lights-container">
       <div class="beat-light" id="light-0"></div>
@@ -297,6 +324,46 @@
   </div>
 
   <script>
+    // Audio context and oscillator setup
+    let audioContext;
+    let clickBuffer;
+    let isSoundEnabled = true;
+
+    // Initialize audio
+    async function initAudio() {
+      try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Create a simple click sound
+        const sampleRate = audioContext.sampleRate;
+        const duration = 0.05; // 50ms click
+        const buffer = audioContext.createBuffer(1, sampleRate * duration, sampleRate);
+        const data = buffer.getChannelData(0);
+        
+        // Create a click sound with a quick attack and decay
+        for (let i = 0; i < buffer.length; i++) {
+          const t = i / sampleRate;
+          data[i] = Math.sin(2 * Math.PI * 1000 * t) * Math.exp(-t * 50);
+        }
+        
+        clickBuffer = buffer;
+      } catch (error) {
+        console.error('Error initializing audio:', error);
+        isSoundEnabled = false;
+        document.getElementById('sound-toggle').disabled = true;
+      }
+    }
+
+    // Play click sound
+    function playClick() {
+      if (!isSoundEnabled || !audioContext || !clickBuffer) return;
+      
+      const source = audioContext.createBufferSource();
+      source.buffer = clickBuffer;
+      source.connect(audioContext.destination);
+      source.start();
+    }
+
     // Register service worker for offline functionality
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -332,6 +399,7 @@
     const bpmDisplay = document.getElementById('bpm-display');
     const startStopButton = document.getElementById('start-stop');
     const songSelect = document.getElementById('song-select');
+    const soundToggleButton = document.getElementById('sound-toggle');
 
     let isRunning = false;
     let interval;
@@ -351,6 +419,9 @@
           light.classList.add(i === 0 ? 'bright' : 'pulse');
         }
       });
+      if (isSoundEnabled) {
+        playClick();
+      }
     }
 
     function startMetronome() {
@@ -371,6 +442,20 @@
       lights.forEach(light => light.classList.remove('bright', 'pulse'));
       startStopButton.textContent = 'Start';
     }
+
+    // Initialize audio when user interacts with the page
+    document.addEventListener('click', () => {
+      if (!audioContext) {
+        initAudio();
+      }
+    }, { once: true });
+
+    // Sound toggle functionality
+    soundToggleButton.addEventListener('click', () => {
+      isSoundEnabled = !isSoundEnabled;
+      soundToggleButton.textContent = isSoundEnabled ? '🔊 Sound' : '🔇 Sound';
+      soundToggleButton.classList.toggle('active', isSoundEnabled);
+    });
 
     bpmInput.addEventListener('input', () => {
       bpmDisplay.textContent = bpmInput.value;
