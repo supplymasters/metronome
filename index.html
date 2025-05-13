@@ -312,7 +312,7 @@
     <input type="range" id="bpm" min="40" max="240" value="120">
     <div class="button-group">
       <button id="start-stop">Start</button>
-      <button id="sound-toggle" class="sound-toggle">🔊 Sound</button>
+      <button id="sound-toggle" class="sound-toggle">🔇 Sound</button>
     </div>
 
     <div class="beat-lights-container">
@@ -327,7 +327,7 @@
     // Audio context and oscillator setup
     let audioContext;
     let clickBuffer;
-    let isSoundEnabled = true;
+    let isSoundEnabled = false;
 
     // Initialize audio
     async function initAudio() {
